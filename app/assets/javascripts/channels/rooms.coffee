@@ -1,28 +1,16 @@
 jQuery(document).on 'turbolinks:load', ->
-  messages = $('#messages')
-  if $('#messages').length > 0
+  $messages = $('#messages')
+  $new_message_form = $('#new-message')
+  $new_message_body = $new_message_form.find('#message-body')
 
-App.global_chat = App.cable.subscriptions.create {
-    channel: "ChatRoomChannel"
-    chat_room_id: ''
-  },
-  connected: ->
-    # Called when the subscription is ready for use on the server
+  if $messages.length > 0
+    App.chat = App.cable.subscriptions.create {
+      channel: "ChatChannel"
+      },
+      connected: ->
 
-  disconnected: ->
-    # Called when the subscription has been terminated by the server
+      disconnected: ->
 
-  received: (data) ->
-    # Data received
+      received: (data) ->
 
-  send_message: (message, chat_room_id) ->
-    @perform 'send_message', message: message, chat_room_id: chat_room_id
-
-   $('#new_message').submit (e) ->
-      $this = $(this)
-      textarea = $this.find('#message_body')
-      if $.trim(textarea.val()).length > 1
-        App.global_chat.send_message textarea.val(), messages.data('chat-room-id')
-        textarea.val('')
-      e.preventDefault()
-      return false
+      send_message: (message) ->
