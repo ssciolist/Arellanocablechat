@@ -5,7 +5,7 @@ jQuery(document).on 'turbolinks:load', ->
 
   if $messages.length > 0
     App.chat = App.cable.subscriptions.create {
-      channel: "ChatChannel"
+      channel: "ChatRoomChannel"
       },
       connected: ->
 
